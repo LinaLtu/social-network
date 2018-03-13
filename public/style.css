@@ -1,0 +1,45 @@
+body {
+     background-color: pink;
+    /* color: white;  */
+}
+
+.content {
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px;
+    flex-wrap: wrap;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.registration-form {
+    max-width: 50%;
+    text-align: center;
+    margin: 2%;
+}
+
+.form-element {
+    padding: 10px 90%;
+    margin: 5px;
+    text-align: center;
+}
+
+.form-btn {
+    padding: 10px 65px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: #F7F035;
+}
+
+.welcome-h1 {
+    margin: 2% auto;
+    text-align: center;
+}
+
+.logo {
+    margin: 5% auto;
+    text-align: center;
+    max-width: 150%;
+}

@@ -37,9 +37,17 @@ function insertRegistration(firstname, lastname, email, password) {
         .catch(err => console.log(err));
 }
 
+function getUserInfo(email) {
+    const q = `SELECT * FROM users WHERE email = $1`;
+    const param = [email];
+    return db.query(q, param);
+}
+
 module.exports.hashPassword = hashPassword;
 module.exports.insertRegistration = insertRegistration;
+module.exports.getUserInfo = getUserInfo;
 //
+
 // function getSignature(userId) {
 //     const q = `SELECT signature FROM signatures WHERE user_id = $1`;
 //     const param = [userId];

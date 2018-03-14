@@ -1,15 +1,17 @@
 import React from "react";
-import axios from "axios";
+import axios from "./axios";
+import { Link } from 'react-router-dom';
 
 export default class Registration extends React.Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
 
         this.state = {
             firstname: '',
             lastname: '',
             email: '',
             password: '',
+            error: false
 
         }
 
@@ -36,24 +38,32 @@ export default class Registration extends React.Component {
             email: this.state.email,
             password: this.state.password }
         )
-                .then(function(results) {
+                .then((results) => {
                     console.log("Success", results.data);
-    ///change url to slash
-                location.replace("/");
+                    if(results.data.success == false){
+                        this.setState({
+                            error: true
+                        })
+                    } else {
+                        location.replace("/");
+                    }
                 });
             }
 
     render() {
         const  { firstname, lastname, email, password } = this.state;
         return (
-
-                <form className="registration-form">
-                    <input onChange={ this.handleChange } name="firstname" type="text" placeholder = "First Name" className = "form-element" /><br/>
-                    <input onChange={ this.handleChange } name="lastname" type="text" placeholder = "Last Name" className = "form-element" /><br/>
-                    <input onChange={ this.handleChange } name="email" type="text" placeholder = "Email" className = "form-element" /><br/>
-                    <input onChange={ this.handleChange } name="password" type="password" placeholder = "Password" className = "form-element" /><br/>
-                    <button onClick={ this.handleSubmit } className = "form-btn">Let's Dance!</button>
-                </form>
+                <div className="form">
+                    <form className="registration-form">
+                        <input onChange={ this.handleChange } name="firstname" type="text" placeholder = "First Name" className = "form-element" /><br/>
+                        <input onChange={ this.handleChange } name="lastname" type="text" placeholder = "Last Name" className = "form-element" /><br/>
+                        <input onChange={ this.handleChange } name="email" type="text" placeholder = "Email" className = "form-element" /><br/>
+                        <input onChange={ this.handleChange } name="password" type="password" placeholder = "Password" className = "form-element" /><br/>
+                        <button onClick={ this.handleSubmit } className = "form-btn">Let's Dance!</button>
+                    </form>
+                    { this.state.error && <div className="error">Something went wrong</div> }
+                    <h4>Already registered?<Link to="/login">Click here to Log in!</Link></h4>
+                </div>
 
         )
     }

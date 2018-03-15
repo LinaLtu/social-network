@@ -50,10 +50,11 @@ export default class App extends React.Component {
     //     )
     // }
     render() {
-        console.log(this.state.url, "99");
         return (
-            <div className="content">
-                <Logo />
+            <div className="app-content">
+                <div className="app-logo">
+                    <Logo />
+                </div>
                 <ProfilePic
                     toggleUploader={this.toggleUploader}
                     firstname={this.state.firstname}

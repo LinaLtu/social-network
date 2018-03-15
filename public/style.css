@@ -14,15 +14,29 @@ body {
     justify-content: center;
 }
 
+.form {
+    /* display: flex; */
+    /* flex-direction: column; */
+    margin: 0 auto;
+    text-align: center;
+}
+
+.form-inputs {
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
 .registration-form, .login-form {
-    max-width: 50%;
+    /* width: 50%; */
     text-align: center;
     margin: 2%;
 }
 
 .form-element {
-    padding: 10px 90%;
+    padding: 10px 20px;
     margin: 5px;
+    width: 600px;
     text-align: center;
 }
 
@@ -34,11 +48,6 @@ body {
     text-align: center;
 }
 
-.form {
-    margin: 0 auto;
-    text-align: center;
-}
-
 .welcome-h1 {
     margin: 2% auto;
     text-align: center;
@@ -47,7 +56,7 @@ body {
 .logo {
     margin: 5% auto;
     text-align: center;
-    max-width: 150%;
+    max-width: 90%;
 }
 
 .logo-small {
@@ -56,4 +65,8 @@ body {
 
 .login {
     margin: 0 auto;
+}
+
+.profile-pic {
+    font-size: 20px;
 }

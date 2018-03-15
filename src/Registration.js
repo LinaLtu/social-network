@@ -55,14 +55,16 @@ export default class Registration extends React.Component {
         return (
                 <div className="form">
                     <form className="registration-form">
-                        <input onChange={ this.handleChange } name="firstname" type="text" placeholder = "First Name" className = "form-element" /><br/>
-                        <input onChange={ this.handleChange } name="lastname" type="text" placeholder = "Last Name" className = "form-element" /><br/>
-                        <input onChange={ this.handleChange } name="email" type="text" placeholder = "Email" className = "form-element" /><br/>
-                        <input onChange={ this.handleChange } name="password" type="password" placeholder = "Password" className = "form-element" /><br/>
-                        <button onClick={ this.handleSubmit } className = "form-btn">Let's Dance!</button>
+                        <div clasName="form-inputs">
+                            <input onChange={ this.handleChange } name="firstname" type="text" placeholder = "First Name" className = "form-element" /><br/>
+                            <input onChange={ this.handleChange } name="lastname" type="text" placeholder = "Last Name" className = "form-element" /><br/>
+                            <input onChange={ this.handleChange } name="email" type="text" placeholder = "Email" className = "form-element" /><br/>
+                            <input onChange={ this.handleChange } name="password" type="password" placeholder = "Password" className = "form-element" /><br/>
+                            <button onClick={ this.handleSubmit } className = "form-btn">Let's Dance!</button>
+                        </div>
                     </form>
                     { this.state.error && <div className="error">Something went wrong</div> }
-                    <h4>Already registered?<Link to="/login">Click here to Log in!</Link></h4>
+                    <h4>Already registered?<Link to="/login"> Click here to Log in!</Link></h4>
                 </div>
 
         )

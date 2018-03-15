@@ -22,7 +22,7 @@ export default class Welcome extends React.Component {
 
                     <div className = "content">
                         <h1 className="welcome-h1">Welcome to Berlin's Body Jammers' Community</h1>
-                        <div><Logo /></div>
+                        <Logo />
 
                     <HashRouter>
                         <div>

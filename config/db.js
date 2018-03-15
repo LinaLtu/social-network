@@ -24,6 +24,22 @@ function hashPassword(plainTextPassword) {
     });
 }
 
+function checkPassword(textEnteredInLoginForm, hashedPasswordFromDatabase) {
+    return new Promise(function(resolve, reject) {
+        bcrypt.compare(
+            textEnteredInLoginForm,
+            hashedPasswordFromDatabase,
+            function(err, doesMatch) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(doesMatch);
+                }
+            }
+        );
+    });
+}
+
 function insertRegistration(firstname, lastname, email, password) {
     const q = `INSERT INTO users (firstname, lastname, email, password) VALUES ($1, $2, $3, $4) RETURNING *`;
     const params = [firstname, lastname, email, password];
@@ -43,9 +59,37 @@ function getUserInfo(email) {
     return db.query(q, param);
 }
 
+function getUserInfoById(id) {
+    const q = `SELECT id, firstname, lastname, email, url FROM users WHERE id = $1`;
+    const param = [id];
+    return db.query(q, param);
+}
+
+function insertImageIntoDB(url, id) {
+    const q = `UPDATE users SET url = $1 WHERE id = $2 RETURNING *`;
+    console.log("From the q: ", url, id);
+    const params = [url, id];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            let images = results.rows;
+            images.forEach(function(image) {
+                console.log(image);
+                // let url = config.s3Url + image.image;
+                // image.image = url;
+            });
+            return images[0];
+        })
+        .catch(err => console.log(err));
+}
+
 module.exports.hashPassword = hashPassword;
 module.exports.insertRegistration = insertRegistration;
 module.exports.getUserInfo = getUserInfo;
+module.exports.getUserInfoById = getUserInfoById;
+module.exports.checkPassword = checkPassword;
+module.exports.insertImageIntoDB = insertImageIntoDB;
 //
 
 // function getSignature(userId) {

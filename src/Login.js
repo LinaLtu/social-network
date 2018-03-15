@@ -44,11 +44,13 @@ export default class Login extends React.Component {
     render() {
         return (
             <div className="login">
-                <div className="login-form">
-                    <input onChange={ this.handleChange } name="email" type="text" placeholder = "Email" className = "form-element" /><br/>
-                    <input onChange={ this.handleChange } name="password" type="password" placeholder = "Password" className = "form-element" /><br/>
-                    <button onClick={ this.handleSubmit } className = "form-btn">Log In</button>
-                </div>
+                <form className="login-form">
+                    <div clasName="form-inputs">
+                        <input onChange={ this.handleChange } name="email" type="text" placeholder = "Email" className = "form-element" /><br/>
+                        <input onChange={ this.handleChange } name="password" type="password" placeholder = "Password" className = "form-element" /><br/>
+                        <button onClick={ this.handleSubmit } className = "form-btn">Log In</button>
+                    </div>
+                </form>
                 { this.state.error && <div className="error">Something went wrong</div> }
                 <h4>Not registered? <Link to="/">Click here to Register</Link></h4>
           </div>

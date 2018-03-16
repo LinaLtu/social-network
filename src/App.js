@@ -4,6 +4,8 @@ import Logo from "./Logo";
 import ProfilePic from "./ProfilePic";
 import ProfilePicUpload from "./ProfilePicUpload";
 import axios from "./axios";
+import Profile from "./Profile";
+import { BrowserRouter, Link, Route } from "react-router-dom";
 
 export default class App extends React.Component {
     constructor() {
@@ -15,18 +17,21 @@ export default class App extends React.Component {
             lastname: "",
             email: "",
             url: "/placeholder-img.jpg",
+            bio: "",
             showUploader: false
         };
 
         this.toggleUploader = this.toggleUploader.bind(this);
         this.changeImageUrl = this.changeImageUrl.bind(this);
+        this.setBio = this.setBio.bind(this);
     }
 
     componentDidMount() {
         axios.get("/user").then(res => {
-            const { firstname, lastname, email, id, url } = res.data.data;
-            this.setState({ id, firstname, lastname, email });
-            console.log(this.state);
+            const { firstname, lastname, email, id, url, bio } = res.data.data;
+            this.setState({ id, firstname, lastname, email, bio }, function() {
+                console.log("New state", this.state);
+            });
 
             if (url) {
                 this.setState({ url: url });
@@ -49,22 +54,61 @@ export default class App extends React.Component {
     //         </div>
     //     )
     // }
+    setBio(newBio) {
+        console.log("Send button clicked", newBio);
+        axios.post("/setbio", { bio: newBio }).then(res => {
+            console.log("Res from setBio ", res.config.data);
+            this.setState({ bio: newBio });
+            // this.props.res.data.bio;
+        });
+    }
+
     render() {
+        console.log("Rendering app", this.state);
         return (
             <div className="app-content">
-                <div className="app-logo">
-                    <Logo />
+                <div className="app-header">
+                    <div className="app-logo">
+                        <Logo />
+                    </div>
+                    {this.state.showUploader && (
+                        <ProfilePicUpload
+                            changeImageUrl={this.changeImageUrl}
+                        />
+                    )}
+
+                    <ProfilePic
+                        toggleUploader={this.toggleUploader}
+                        firstname={this.state.firstname}
+                        lastname={this.state.lastname}
+                        email={this.state.email}
+                        url={this.state.url}
+                        className="profile-pic-small"
+                    />
                 </div>
-                <ProfilePic
-                    toggleUploader={this.toggleUploader}
-                    firstname={this.state.firstname}
-                    lastname={this.state.lastname}
-                    email={this.state.email}
-                    url={this.state.url}
-                />
-                {this.state.showUploader && (
-                    <ProfilePicUpload changeImageUrl={this.changeImageUrl} />
-                )}
+                <BrowserRouter>
+                    <div>
+                        {/*<Link to="/"> Profile</Link>
+                        <br />*/}
+                        {/*<Link to="/user/2"> Other Profile</Link>*/}
+
+                        <Route
+                            exact
+                            path="/"
+                            render={() => (
+                                <Profile
+                                    firstname={this.state.firstname}
+                                    lastname={this.state.lastname}
+                                    email={this.state.email}
+                                    url={this.state.url}
+                                    bio={this.state.bio}
+                                    setBio={this.setBio}
+                                    toggleUploader={this.toggleUploader}
+                                />
+                            )}
+                        />
+                    </div>
+                </BrowserRouter>
             </div>
         );
     }

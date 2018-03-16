@@ -60,7 +60,7 @@ function getUserInfo(email) {
 }
 
 function getUserInfoById(id) {
-    const q = `SELECT id, firstname, lastname, email, url FROM users WHERE id = $1`;
+    const q = `SELECT id, firstname, lastname, email, url, bio FROM users WHERE id = $1`;
     const param = [id];
     return db.query(q, param);
 }
@@ -84,12 +84,26 @@ function insertImageIntoDB(url, id) {
         .catch(err => console.log(err));
 }
 
+function insertBioIntoDB(bio, id) {
+    const q = `UPDATE users SET bio = $1 WHERE id = $2 RETURNING *`;
+    // console.log("From the q: ", url, id);
+    const params = [bio, id];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            console.log("Results from insertBioIntoDB", results);
+        })
+        .catch(err => console.log(err));
+}
+
 module.exports.hashPassword = hashPassword;
 module.exports.insertRegistration = insertRegistration;
 module.exports.getUserInfo = getUserInfo;
 module.exports.getUserInfoById = getUserInfoById;
 module.exports.checkPassword = checkPassword;
 module.exports.insertImageIntoDB = insertImageIntoDB;
+module.exports.insertBioIntoDB = insertBioIntoDB;
 //
 
 // function getSignature(userId) {

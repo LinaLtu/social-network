@@ -37,7 +37,7 @@ body {
 .form-element {
     padding: 10px 20px;
     margin: 5px;
-    width: 600px;
+    width: 500px;
     text-align: center;
 }
 
@@ -62,25 +62,28 @@ body {
 }
 
 .logo-small {
-    max-width: 50%;
+    max-width: 200px;
 }
 
 .login {
     margin: 0 auto;
 }
 
-.app-content {
+.app-header {
     display: flex;
     flex-direction: row;
 }
 
-.profile-pic {
-    max-width: 150px;
-    max-height: 150px;
+.profile-pic-small {
+    width: 150px;
+    height: 150px;
+}
 
-    overflow: hidden;
-
+.img-circle {
+    border: 1px solid black;
     border-radius: 50%;
+    width: 150px;
+    height: 150px;
 }
 
 .app-logo {
@@ -90,4 +93,28 @@ body {
     border-radius: 7px;
     width: 30%;
     margin-top: 2px;
+}
+
+.profile-content {
+    width: 700px;
+    height: auto;
+    border: 1px solid black;
+}
+
+.profile-content {
+    display: flex;
+}
+
+.profile-pic-big {
+    width: 400px;
+}
+
+.profile-info {
+    padding-left: 20px;
+}
+
+.textarea {
+    border: 1px solid black;
+    padding: 20px 60px;
+    background-color: white;
 }

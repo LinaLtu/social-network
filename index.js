@@ -172,13 +172,24 @@ app.get("/user", function(req, res) {
     });
 });
 
+app.post("/setbio", function(req, res) {
+    console.log("Running post/setbio", req.body);
+
+    db.insertBioIntoDB(req.body.bio, req.session.userId).then(results => {
+        console.log("Upload Successful", results);
+        res.json({
+            success: true
+        });
+    });
+});
+
 app.get("*", function(req, res) {
-    console.log("Req.session from welcome", !req.session.userId);
+    // console.log("Req.session from welcome", !req.session.userId);
     if (!req.session.userId && req.url != "/welcome") {
-        console.log("You are in welcome");
+        // console.log("You are in welcome");
         res.redirect("/welcome");
     } else if (req.session.userId && req.url == "/welcome") {
-        console.log("You are in /");
+        // console.log("You are in /");
         res.redirect("/");
     } else {
         res.sendFile(__dirname + "/index.html");

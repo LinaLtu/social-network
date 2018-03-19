@@ -1,23 +1,24 @@
-import React from "react";
-import Welcome from "./Welcome";
-import Logo from "./Logo";
-import ProfilePic from "./ProfilePic";
-import ProfilePicUpload from "./ProfilePicUpload";
-import axios from "./axios";
-import Profile from "./Profile";
-import { BrowserRouter, Link, Route } from "react-router-dom";
+import React from 'react';
+import Welcome from './Welcome';
+import Logo from './Logo';
+import ProfilePic from './ProfilePic';
+import ProfilePicUpload from './ProfilePicUpload';
+import OtherUser from './OtherUser';
+import axios from './axios';
+import Profile from './Profile';
+import { BrowserRouter, Link, Route } from 'react-router-dom';
 
 export default class App extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            id: "",
-            firstname: "",
-            lastname: "",
-            email: "",
-            url: "/placeholder-img.jpg",
-            bio: "",
+            id: '',
+            firstname: '',
+            lastname: '',
+            email: '',
+            url: '/placeholder-img.jpg',
+            bio: '',
             showUploader: false
         };
 
@@ -27,10 +28,10 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        axios.get("/user").then(res => {
+        axios.get('/user').then(res => {
             const { firstname, lastname, email, id, url, bio } = res.data.data;
             this.setState({ id, firstname, lastname, email, bio }, function() {
-                console.log("New state", this.state);
+                console.log('New state', this.state);
             });
 
             if (url) {
@@ -55,16 +56,15 @@ export default class App extends React.Component {
     //     )
     // }
     setBio(newBio) {
-        console.log("Send button clicked", newBio);
-        axios.post("/setbio", { bio: newBio }).then(res => {
-            console.log("Res from setBio ", res.config.data);
+        console.log('Send button clicked', newBio);
+        axios.put(`/user/${this.state.id}`, { bio: newBio }).then(res => {
+            console.log('Res from setBio ', res.config.data);
             this.setState({ bio: newBio });
             // this.props.res.data.bio;
         });
     }
 
     render() {
-        console.log("Rendering app", this.state);
         return (
             <div className="app-content">
                 <div className="app-header">
@@ -88,9 +88,9 @@ export default class App extends React.Component {
                 </div>
                 <BrowserRouter>
                     <div>
-                        {/*<Link to="/"> Profile</Link>
-                        <br />*/}
-                        {/*<Link to="/user/2"> Other Profile</Link>*/}
+                        <Link to="/"> Profile</Link>
+                        <br />
+                        <Link to="/user/2"> Other Profile</Link>
 
                         <Route
                             exact
@@ -107,6 +107,7 @@ export default class App extends React.Component {
                                 />
                             )}
                         />
+                        <Route exact path="/user/:id" component={OtherUser} />
                     </div>
                 </BrowserRouter>
             </div>

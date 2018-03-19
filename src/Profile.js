@@ -1,6 +1,6 @@
-import React from "react";
-import ProfilePic from "./ProfilePic";
-import axios from "./axios";
+import React from 'react';
+import ProfilePic from './ProfilePic';
+import axios from './axios';
 
 export default class Profile extends React.Component {
     constructor(props) {
@@ -17,7 +17,7 @@ export default class Profile extends React.Component {
 
     toggleBio() {
         this.setState({ showAddBio: !this.state.showAddBio });
-        console.log("Toggle Bio");
+        console.log('Toggle Bio');
     }
 
     handleChange(e) {
@@ -37,7 +37,7 @@ export default class Profile extends React.Component {
                     />
                 </div>
                 <div className="profile-info">
-                    <p style={{ fontSize: 22 + "px", padding: 0 + "px" }}>
+                    <p style={{ fontSize: 22 + 'px', padding: 0 + 'px' }}>
                         Name: {this.props.firstname} {this.props.lastname}
                     </p>
                     <p>Email: {this.props.email}</p>

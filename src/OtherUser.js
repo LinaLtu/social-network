@@ -13,7 +13,9 @@ export default class OtherUser extends React.Component {
 
     componentDidMount() {
         axios.get(`/get-user/${this.props.match.params.id}`).then(res => {
-            if (res.data.userInfo != 'same') {
+
+            if (res.data.data != 'same') {
+                console.log("From componentDidMount");
                 const {
                     firstname,
                     lastname,
@@ -22,12 +24,25 @@ export default class OtherUser extends React.Component {
                     url,
                     bio
                 } = res.data.userInfo;
-                const friendshipStatus  = res.data.friendshipStatus.status;
+
+                let friendshipStatus;
+                let recipientId;
+                let senderId
+
+                if(res.data.friendshipStatus){
+                    console.log(res.data.friendshipStatus);
+                friendshipStatus  = res.data.friendshipStatus.status;
+                recipientId = res.data.friendshipStatus.recipient_id;
+                senderId = res.data.friendshipStatus.sender
+                } else {
+                    friendshipStatus = 0;
+                }
+
                 this.setState(
-                    { firstname, lastname, email, id, url, bio, friendshipStatus },
+                    { firstname, lastname, email, id, url, bio, friendshipStatus, recipientId, senderId  },
                     function() {
                         console.log(
-                            "Res data", friendshipStatus
+                            "Res data", this.state
                         );
                     }
                 );
@@ -41,18 +56,22 @@ export default class OtherUser extends React.Component {
     }
 
     render() {
+        console.log("Before if", this.props);
+        if(typeof this.state.friendshipStatus === "undefined") {
+            return (<div>Loading...</div>);
+        }
+        console.log("From OtherUser render ", this.state);
         return (
             <div className="app-content">
-                <div className="app-header">
+            
                     <div className="app-logo">
-                        <Logo />
                     </div>
                     {this.state.showUploader && (
                         <ProfilePicUpload
                             changeImageUrl={this.changeImageUrl}
                         />
                     )}
-                </div>
+
 
                 <div className="profile-content">
                     <div>
@@ -73,6 +92,9 @@ export default class OtherUser extends React.Component {
                         <FriendButton
                             id={this.state.id}
                             friendshipStatus={this.state.friendshipStatus}
+                            recipientId={this.state.recipientId}
+                            senderId={this.state.senderId}
+                            otherId={this.props.match.params.id}
                         />
                     </div>
                 </div>

@@ -88,9 +88,6 @@ export default class App extends React.Component {
                 </div>
                 <BrowserRouter>
                     <div>
-                        <Link to="/"> Profile</Link>
-                        <br />
-                        <Link to="/user/2"> Other Profile</Link>
 
                         <Route
                             exact

@@ -100,7 +100,8 @@ function insertBioIntoDB(bio, id) {
 function getFriendshipStatus(sender_id, recipient_id) {
     const q = `SELECT status, sender_id AS sender, recipient_id FROM friendships
     WHERE (recipient_id = $1 or sender_id = $1)
-    AND (recipient_id = $2 or sender_id = $2)`
+    AND (recipient_id = $2 or sender_id = $2)
+    AND (status = 1 or status = 2)`
     const param = [sender_id, recipient_id];
     return db.query(q, param);
 }
@@ -117,14 +118,32 @@ function sendFriendRequest(sender_id, recipient_id, status) {
         .catch(err => console.log(err));
 }
 
-function cancelFriendRequest(recipient_id) {
-    const q = `UPDATE friendships SET status = 5 WHERE recipient_id = $1 RETURNING *`;
-    const params = [id];
+function deleteFriend(sender, recipient_id) {
+    const q = `UPDATE friendships SET status = 5
+    WHERE (sender_id = $1 AND recipient_id = $2)
+    OR (recipient_id = $1 AND sender_id = $2)
+    RETURNING *`;
+    const params = [sender, recipient_id];
 
     return db
         .query(q, params)
         .then(results => {
-            console.log('Results from cancelFriendRequest', results);
+            console.log('Results from deleteFriend', results);
+        })
+        .catch(err => console.log(err));
+}
+
+function acceptFriendRequest(sender) {
+    const q = `UPDATE friendships SET status = 2
+    WHERE (sender_id = $1 AND recipient_id = $2)
+    OR (recipient_id = $1 AND sender_id = $2)
+    RETURNING *`;
+    const params = [sender];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            console.log('Results from acceptFriendRequest', results);
         })
         .catch(err => console.log(err));
 }
@@ -140,5 +159,6 @@ module.exports.checkPassword = checkPassword;
 module.exports.insertImageIntoDB = insertImageIntoDB;
 module.exports.insertBioIntoDB = insertBioIntoDB;
 module.exports.sendFriendRequest = sendFriendRequest;
-module.exports.cancelFriendRequest = cancelFriendRequest;
 module.exports.getFriendshipStatus = getFriendshipStatus;
+module.exports.acceptFriendRequest = acceptFriendRequest;
+module.exports.deleteFriend = deleteFriend;

@@ -189,7 +189,9 @@ app.get('/get-user/:id', function(req, res) {
     console.log('From the other OtherUser page', req.params.id);
     if (req.params.id == req.session.userId) {
         console.log('Same');
-        res.json({ data: 'same' });
+        res.json({
+            data: 'same'
+         });
     } else {
         Promise.all(
             [
@@ -197,7 +199,6 @@ app.get('/get-user/:id', function(req, res) {
                 db.getFriendshipStatus(req.session.userId, req.params.id)
             ]
         ).then(function ([userInfo, friendshipStatus]) {
-            console.log("Results from promises all", userInfo);
             if (userInfo.rows.length === 0) {
                 res.sendStatus(404);
             } else {
@@ -220,8 +221,22 @@ app.post('/send-request/:id', function(req, res) {
     db.sendFriendRequest(req.session.userId, req.params.id, 1).then(results => {
     res.json({ data: results.rows[0] });
 }).catch(err => console.log(err));
+});
+
+app.post('/accept-request/:id', function(req, res) {
+    db.acceptFriendRequest(req.params.id).then(results => {
+        console.log("Request accepted");
+    res.json({ data: results.rows[0] });
+}).catch(err => console.log(err));
     // res.json({data: "ok"});
 });
+
+app.post('/delete-friend/:id', function(req, res) {
+    db.deleteFriend(req.session.userId, req.params.id).then(results => {
+    res.json({ data: results.rows[0] });
+}).catch(err => console.log(err));
+});
+
 
 // app.post('/cancel-request/:id', function(req, res) {
 //     console.log("Req body ",req.params.id);

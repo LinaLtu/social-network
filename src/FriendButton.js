@@ -7,7 +7,7 @@ export default class FriendButton extends React.Component {
 
 
         this.state = {
-            text: 'This is a button'
+            text: 'Send a Friend Request'
 
         };
 
@@ -15,22 +15,55 @@ export default class FriendButton extends React.Component {
 
     }
 
+    componentDidMount() {
+        if(!this.props.friendshipStatus || this.props.friendshipStatus == 0){
+            this.setState( {text: "Send Friend Request"} )
+        } else if ( this.props.friendshipStatus == 1){
+            if (this.props.otherId == this.props.recipientId){
+                this.setState( {text: "Cancel Friend Request"} )
+            } else {
+                this.setState( {text: "Accept Friend Request"} )
+            }
+        } else if ( this.props.friendshipStatus == 2){
+                this.setState( {text: "Delete From Friends' List"} )
+        }
+        else if ( this.props.friendshipStatus == 3 || this.props.friendshipStatus == 4 || this.props.friendshipStatus == 5){
+                    this.setState( {text: "Send Friendship Request Again"} )
+        }
+    }
+
     handleClick(){
-        console.log("The friends button has been clicked", this.props.friendshipStatus)
-        if(!this.props.friendshipStatus){
-        axios.post(`/send-request/${this.props.id}`).then(res => {
-        }).catch((err) => console.log(err));
-    } else if ( this.props.friendshipStatus == 1){
-            this.setState( {text: "Cancel Friend Request"} )
-    } else if ( this.props.friendshipStatus == 2){
-            this.setState( {text: "Delete From Friends' List"} )
-    }
-    else if ( this.props.friendshipStatus == 3 || this.props.friendshipStatus == 4 || this.props.friendshipStatus == 5){
-                this.setState( {text: "Send Friendship Request Again"} )
-    }
+            if(!this.props.friendshipStatus || this.props.friendshipStatus == 0){
+                axios.post(`/send-request/${this.props.id}`).then(res => {
+                }).catch((err) => console.log(err));
+            } else if ( this.props.friendshipStatus == 1){
+
+                console.log("We are in handleClick and friendship status is 1 and I can accept the friend request");
+                //I have to accept request here
+                axios.post(`/accept-request/${this.props.id}`).then(res => {
+                    console.log("RES from axios", res);
+                }).catch((err) => console.log(err));
+
+                this.setState( {text: "Cancel Friend Request"} )
+            } else if ( this.props.friendshipStatus == 2){
+
+                axios.post(`/delete-friend/${this.props.id}`).then(res => {
+                }).catch((err) => console.log(err));
+
+                this.setState( {text: "Delete From Friends' List"} )
+
+            }
+            else if ( this.props.friendshipStatus == 3 || this.props.friendshipStatus == 4 || this.props.friendshipStatus == 5){
+                axios.post(`/send-request/${this.props.id}`).then(res => {
+                    console.log("RES from axios", res);
+                }).catch((err) => console.log(err));
+
+                this.setState( {text: "Cancel Friend Request"} )
+            }
     }
 
     render() {
+
         return (<button onClick={this.handleClick}>{this.state.text}</button>);
     }
 }

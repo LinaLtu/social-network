@@ -1,6 +1,20 @@
 body {
     background-color: pink;
-    /* color: white;  */
+    background-image: url("background1.jpg");
+    background-repeat:no-repeat;
+    background-size:cover;
+    color: #565b63;
+    margin: 0;
+    padding: 0;
+    font-family: 'Fredericka the Great', cursive;
+
+}
+
+.app-header {
+    background: #bfb8c6;
+    margin: 0;
+    padding: 20px;
+    height: 140px;
 }
 
 .content {
@@ -99,6 +113,9 @@ body {
     width: 700px;
     height: auto;
     border: 1px solid black;
+    margin: 2%;
+    padding: 2%;
+    border-radius: 10px;
 }
 
 .profile-content {

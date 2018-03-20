@@ -11,7 +11,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
+DROP TABLE IF EXISTS friendships;
 CREATE TABLE friendships (
     id SERIAL PRIMARY KEY,
     sender_id INTEGER NOT NULL,

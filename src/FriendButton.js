@@ -40,9 +40,16 @@ export default class FriendButton extends React.Component {
 
                 console.log("We are in handleClick and friendship status is 1 and I can accept the friend request");
                 //I have to accept request here
-                axios.post(`/accept-request/${this.props.id}`).then(res => {
-                    console.log("RES from axios", res);
-                }).catch((err) => console.log(err));
+                if(this.props.otherId == this.props.recipientId) {
+                    axios.post(`/cancel-request/${this.props.id}`).then(res => {
+                        console.log("cancel from axios", res);
+                    }).catch((err) => console.log(err));
+
+                } else {
+                    axios.post(`/accept-request/${this.props.id}`).then(res => {
+                        console.log("RES from axios", res);
+                    }).catch((err) => console.log(err));
+                }
 
                 this.setState( {text: "Cancel Friend Request"} )
             } else if ( this.props.friendshipStatus == 2){

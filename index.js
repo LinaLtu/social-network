@@ -220,21 +220,29 @@ app.post('/send-request/:id', function(req, res) {
     console.log("Req body ",req.params.id);
     db.sendFriendRequest(req.session.userId, req.params.id, 1).then(results => {
     res.json({ data: results.rows[0] });
-}).catch(err => console.log(err));
+    }).catch(err => res.sendStatus(500));
 });
 
 app.post('/accept-request/:id', function(req, res) {
     db.acceptFriendRequest(req.params.id).then(results => {
         console.log("Request accepted");
     res.json({ data: results.rows[0] });
-}).catch(err => console.log(err));
+    }).catch(err => res.sendStatus(500));
+    // res.json({data: "ok"});
+});
+
+app.post('/cancel-request/:id', function(req, res) {
+    db.cancelFriendRequest(req.session.userId, req.params.id).then(results => {
+        console.log("Request canceled");
+    res.json({ data: results.rows[0] });
+    }).catch(err => res.sendStatus(500));
     // res.json({data: "ok"});
 });
 
 app.post('/delete-friend/:id', function(req, res) {
     db.deleteFriend(req.session.userId, req.params.id).then(results => {
     res.json({ data: results.rows[0] });
-}).catch(err => console.log(err));
+    }).catch(err => res.sendStatus(500));
 });
 
 

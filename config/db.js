@@ -107,15 +107,22 @@ function getFriendshipStatus(sender_id, recipient_id) {
 }
 
 function sendFriendRequest(sender_id, recipient_id, status) {
-    const q = `INSERT INTO friendships (sender_id, recipient_id, status) VALUES ($1, $2, $3) RETURNING *`;
-    const params = [sender_id, recipient_id, status];
+    return getFriendshipStatus(sender_id, recipient_id).then((result) => {
+        if(!result.rows.length){
+            const q = `INSERT INTO friendships (sender_id, recipient_id, status) VALUES ($1, $2, $3) RETURNING *`;
+            const params = [sender_id, recipient_id, status];
 
-    return db
-        .query(q, params)
-        .then(results => {
-            return results;
-        })
-        .catch(err => console.log(err));
+            return db
+                .query(q, params)
+                .then(results => {
+                    return results;
+                })
+                .catch(err => console.log(err));
+        } else {
+            throw new Error("Already exists");
+        }
+    });
+
 }
 
 function deleteFriend(sender, recipient_id) {
@@ -147,6 +154,21 @@ function acceptFriendRequest(sender) {
         })
         .catch(err => console.log(err));
 }
+
+function cancelFriendRequest(sender, recipient_id) {
+    const q = `UPDATE friendships SET status = 0
+    WHERE (sender_id = $1 AND recipient_id = $2)
+    OR (recipient_id = $1 AND sender_id = $2)
+    RETURNING *`;
+    const params = [sender, recipient_id];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            console.log('Results from acceptFriendRequest', results);
+        })
+        .catch(err => console.log(err));
+}
 //SELECT status, sender_id AS sender, recipient_id FROM friendship
 //WHERE (recipient_id = $1 or sender_id = $1)
 //AND (recipient_id = $2 or sender_id = $2)
@@ -162,3 +184,4 @@ module.exports.sendFriendRequest = sendFriendRequest;
 module.exports.getFriendshipStatus = getFriendshipStatus;
 module.exports.acceptFriendRequest = acceptFriendRequest;
 module.exports.deleteFriend = deleteFriend;
+module.exports.cancelFriendRequest = cancelFriendRequest;

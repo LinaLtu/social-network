@@ -23,7 +23,7 @@ export default class ProfilePicUpload extends Component {
 
     render() {
         return (
-            <form>
+            <form className="upload-form">
                 <input type="file" onChange={this.submitUploadImage} />
                 {/*onChange*/}
             </form>

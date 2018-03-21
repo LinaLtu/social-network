@@ -21,7 +21,7 @@ export default class Welcome extends React.Component {
             return (
 
                     <div className = "content">
-                        <h1 className="welcome-h1">Welcome to Berlin's Body Jammers' Community</h1>
+                        <h1 className="welcome-h1">Welcome to the Purple Wave</h1>
                         <Logo />
 
                     <HashRouter>

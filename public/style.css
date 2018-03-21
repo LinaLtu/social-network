@@ -73,7 +73,8 @@ body {
     padding: 10px 65px;
     margin: 5px auto;
     border-radius: 5px;
-    background-color: #f7f035;
+    background-color: #e7cfe9;
+    border: 1px solid black;
     text-align: center;
 }
 
@@ -85,7 +86,7 @@ body {
 .logo {
     margin: 2% auto;
     text-align: center;
-    max-width: 90%;
+    max-width: 80%;
     border-radius: 5px;
 }
 
@@ -123,6 +124,15 @@ body {
     margin-top: -10px;
     border: 1px solid black;
 
+}
+
+.upload-form {
+    width: 200px;
+    padding: 30px;
+    background-color: #FEF2FE;
+    margin-right: 15px;
+    border-radius: 10px;
+    border: 1px solid black;
 }
 
 
@@ -167,8 +177,9 @@ textarea {
 .bio-btn, .send-btn {
     padding: 5px;
     margin: 10px;
-    border: none;
+    border: 1px solid black;
     background-color: #e7cfe9;
+    border-radius: 5px;
     font-weight: 200;
     color: #560e81;
 }

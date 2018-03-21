@@ -63,7 +63,7 @@ export default class OtherUser extends React.Component {
         console.log("From OtherUser render ", this.state);
         return (
             <div className="app-content">
-            
+
                     <div className="app-logo">
                     </div>
                     {this.state.showUploader && (

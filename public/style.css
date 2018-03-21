@@ -1,5 +1,5 @@
 body {
-    background-color: pink;
+    background-color: #ccb9ce;
     background-image: url("background1.jpg");
     background-repeat:no-repeat;
     background-size:cover;
@@ -11,10 +11,20 @@ body {
 }
 
 .app-header {
-    background: #bfb8c6;
+    background: #B89DBA;
+    display: flex;
+    flex-direction: row;
     margin: 0;
     padding: 20px;
-    height: 140px;
+    height: 80px;
+    justify-content: space-between;
+
+        opacity: 0.5;
+}
+
+.app-profile-pic {
+    display: flex;
+    align-items: center;
 }
 
 .content {
@@ -26,6 +36,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.app-content {
+    height: auto;
 }
 
 .form {
@@ -69,11 +83,12 @@ body {
 }
 
 .logo {
-    margin: 5% auto;
+    margin: 2% auto;
     text-align: center;
     max-width: 90%;
     border-radius: 5px;
 }
+
 
 .logo-small {
     max-width: 200px;
@@ -83,43 +98,50 @@ body {
     margin: 0 auto;
 }
 
-.app-header {
-    display: flex;
-    flex-direction: row;
-}
 
 .profile-pic-small {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
+    /* padding: 20px;
+    background: pink; */
 }
 
 .img-circle {
     border: 1px solid black;
     border-radius: 50%;
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
+    z-index: 10;
 }
 
 .app-logo {
+    z-index: 10;
 }
 
 .app-logo img {
-    border-radius: 7px;
-    width: 30%;
-    margin-top: 2px;
+    width: 170px;
+    margin-top: -10px;
+    border: 1px solid black;
+
 }
+
 
 .profile-content {
     width: 700px;
     height: auto;
     border: 1px solid black;
     margin: 2%;
+    margin-bottom: 30%;
     padding: 2%;
     border-radius: 10px;
+    display: flex;
+    background-color: #FEF2FE;
 }
 
-.profile-content {
-    display: flex;
+.profile-content img {
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
 }
 
 .profile-pic-big {
@@ -128,10 +150,46 @@ body {
 
 .profile-info {
     padding-left: 20px;
+    width: 90%;
 }
 
 .textarea {
     border: 1px solid black;
     padding: 20px 60px;
+    background-color: while;
+    border-radius: 10px;
+}
+
+textarea {
+    width: 100%;
+}
+
+.bio-btn, .send-btn {
+    padding: 5px;
+    margin: 10px;
+    border: none;
+    background-color: #e7cfe9;
+    font-weight: 200;
+    color: #560e81;
+}
+
+.send-btn {
+    border-radius: 5px;
     background-color: white;
+    border: 1px solid #565B62;
+    margin-top: 10px;
+}
+
+@media only screen and (max-width: 700px) {
+    .profile-content img {
+        width: 100%;
+    }
+
+    .profile-content {
+        display: flex;
+        direction: column;
+        flex-wrap: wrap;
+        width: 90%;
+    }
+
 }

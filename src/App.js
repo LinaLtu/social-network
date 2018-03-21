@@ -71,20 +71,22 @@ export default class App extends React.Component {
                     <div className="app-logo">
                         <Logo />
                     </div>
-                    {this.state.showUploader && (
-                        <ProfilePicUpload
-                            changeImageUrl={this.changeImageUrl}
-                        />
-                    )}
+                    <div className="app-profile-pic">
+                        {this.state.showUploader && (
+                            <ProfilePicUpload
+                                changeImageUrl={this.changeImageUrl}
+                            />
+                        )}
 
-                    <ProfilePic
-                        toggleUploader={this.toggleUploader}
-                        firstname={this.state.firstname}
-                        lastname={this.state.lastname}
-                        email={this.state.email}
-                        url={this.state.url}
-                        className="profile-pic-small"
-                    />
+                        <ProfilePic
+                            toggleUploader={this.toggleUploader}
+                            firstname={this.state.firstname}
+                            lastname={this.state.lastname}
+                            email={this.state.email}
+                            url={this.state.url}
+                            className="profile-pic-small"
+                        />
+                    </div>
                 </div>
                 <BrowserRouter>
                     <div>

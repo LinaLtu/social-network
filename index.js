@@ -191,14 +191,12 @@ app.get('/get-user/:id', function(req, res) {
         console.log('Same');
         res.json({
             data: 'same'
-         });
+        });
     } else {
-        Promise.all(
-            [
-                db.getUserInfoById(req.params.id),
-                db.getFriendshipStatus(req.session.userId, req.params.id)
-            ]
-        ).then(function ([userInfo, friendshipStatus]) {
+        Promise.all([
+            db.getUserInfoById(req.params.id),
+            db.getFriendshipStatus(req.session.userId, req.params.id)
+        ]).then(function([userInfo, friendshipStatus]) {
             if (userInfo.rows.length === 0) {
                 res.sendStatus(404);
             } else {
@@ -210,41 +208,67 @@ app.get('/get-user/:id', function(req, res) {
             res.json({
                 userInfo: userInfo.rows[0],
                 friendshipStatus: friendshipStatus.rows[0]
-
             });
         });
     }
 });
 
 app.post('/send-request/:id', function(req, res) {
-    console.log("Req body ",req.params.id);
-    db.sendFriendRequest(req.session.userId, req.params.id, 1).then(results => {
-    res.json({ data: results.rows[0] });
-    }).catch(err => res.sendStatus(500));
+    console.log('Req body ', req.params.id);
+    db
+        .sendFriendRequest(req.session.userId, req.params.id, 1)
+        .then(results => {
+            res.json({ data: results.rows[0] });
+        })
+        .catch(err => res.sendStatus(500));
 });
 
 app.post('/accept-request/:id', function(req, res) {
-    db.acceptFriendRequest(req.params.id).then(results => {
-        console.log("Request accepted");
-    res.json({ data: results.rows[0] });
-    }).catch(err => res.sendStatus(500));
+    db
+        .acceptFriendRequest(req.params.id, req.session.userId)
+        .then(results => {
+            res.json({ data: results.rows[0] });
+        })
+        .catch(err => {
+            console.log('Error from accept', err);
+            res.sendStatus(500);
+        });
     // res.json({data: "ok"});
 });
 
 app.post('/cancel-request/:id', function(req, res) {
-    db.cancelFriendRequest(req.session.userId, req.params.id).then(results => {
-        console.log("Request canceled");
-    res.json({ data: results.rows[0] });
-    }).catch(err => res.sendStatus(500));
+    db
+        .cancelFriendRequest(req.session.userId, req.params.id)
+        .then(results => {
+            res.json({ data: results.rows[0] });
+        })
+        .catch(err => {
+            console.log('Error from cancel', err);
+            res.sendStatus(500);
+        });
     // res.json({data: "ok"});
 });
 
 app.post('/delete-friend/:id', function(req, res) {
-    db.deleteFriend(req.session.userId, req.params.id).then(results => {
-    res.json({ data: results.rows[0] });
-    }).catch(err => res.sendStatus(500));
+    db
+        .deleteFriend(req.session.userId, req.params.id)
+        .then(results => {
+            res.json({ data: results.rows[0] });
+        })
+        .catch(err => res.sendStatus(500));
 });
 
+app.get('/get-friends', function(req, res) {
+    db
+        .getAllFriends(req.session.userId)
+        .then(results => {
+                console.log('We have results from friends/SELECT', results);
+            res.json({ data: results.rows });
+        })
+        .catch(err => {
+            console.log('Something went wrong', err);
+            res.sendStatus(500)});
+});
 
 // app.post('/cancel-request/:id', function(req, res) {
 //     console.log("Req body ",req.params.id);
@@ -253,7 +277,6 @@ app.post('/delete-friend/:id', function(req, res) {
 // }).catch(err => console.log(err));
 //     // res.json({data: "ok"});
 // });
-
 
 app.get('*', function(req, res) {
     // console.log("Req.session from welcome", !req.session.userId);

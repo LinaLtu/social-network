@@ -6,6 +6,7 @@ import ProfilePicUpload from './ProfilePicUpload';
 import OtherUser from './OtherUser';
 import axios from './axios';
 import Profile from './Profile';
+import Friends from './Friends';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 
 export default class App extends React.Component {
@@ -90,7 +91,6 @@ export default class App extends React.Component {
                 </div>
                 <BrowserRouter>
                     <div>
-
                         <Route
                             exact
                             path="/"
@@ -107,6 +107,7 @@ export default class App extends React.Component {
                             )}
                         />
                         <Route exact path="/user/:id" component={OtherUser} />
+                        <Route exact path="/friends" component={Friends} />
                     </div>
                 </BrowserRouter>
             </div>

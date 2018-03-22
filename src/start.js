@@ -1,7 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import Welcome from "./Welcome";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import Welcome from './Welcome';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import reduxPromise from 'redux-promise';
+import reducer from './reducers';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+const store = createStore(
+    reducer,
+    composeWithDevTools(applyMiddleware(reduxPromise))
+);
+
+const elem = (
+    <Provider store={store}>
+        <App />
+    </Provider>
+);
 
 // /welcome -> not logged in
 // / -> logged in
@@ -10,14 +26,11 @@ import Welcome from "./Welcome";
 // this is how we look at the URL -> location.pathname
 // if (lacation.pathname == "/welcome") {render }
 
-if( location.pathname != "/welcome" ) {
-    ReactDOM.render(<App />, document.querySelector("main"))
+if (location.pathname != '/welcome') {
+    ReactDOM.render(elem, document.querySelector('main'));
 } else {
-    ReactDOM.render(<Welcome />, document.querySelector("main"));
+    ReactDOM.render(<Welcome />, document.querySelector('main'));
 }
-
-
-
 
 // function HelloWorld() {
 //     return (

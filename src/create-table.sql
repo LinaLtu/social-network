@@ -1,0 +1,22 @@
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    url VARCHAR(255),
+    bio VARCHAR(600),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS friendships;
+CREATE TABLE friendships (
+    id SERIAL PRIMARY KEY,
+    sender_id INTEGER NOT NULL,
+    recipient_id  INTEGER NOT NULL,
+    status INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

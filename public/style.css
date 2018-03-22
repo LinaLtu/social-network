@@ -18,8 +18,7 @@ body {
     padding: 20px;
     height: 80px;
     justify-content: space-between;
-
-        opacity: 0.5;
+    opacity: 0.5;
 }
 
 .app-profile-pic {
@@ -76,7 +75,9 @@ body {
     background-color: #e7cfe9;
     border: 1px solid black;
     text-align: center;
+    cursor: pointer;
 }
+
 
 .welcome-h1 {
     margin: 2% auto;
@@ -182,13 +183,63 @@ textarea {
     border-radius: 5px;
     font-weight: 200;
     color: #560e81;
+    cursor: pointer;
 }
+
+
 
 .send-btn {
     border-radius: 5px;
     background-color: white;
     border: 1px solid #565B62;
     margin-top: 10px;
+    transition: background-color 1s;
+    transition-timing-function: cubic-bezier(.2,1,.3,1);
+}
+
+.send-btn:hover, .form-btn:hover, .bio-btn:hover, .friend-btn:hover {
+    background-color: #CF9DD3;
+    transition: background-color 1s;
+    transition-timing-function: cubic-bezier(.2,1,.3,1);
+}
+
+/* Friends' Page */
+
+.friends-container {
+    display: flex;
+    direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.friends-item {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 20px;
+    max-width: 20%;
+    /* background-color: #f4e1f1; */
+    padding: 20px;
+    display: flex;
+    direction: column;
+    flex-wrap: wrap;
+}
+
+.friends-h1 {
+    font-size: 20px;
+    padding: 20px;
+    margin: 0
+}
+
+.friends-item img {
+    width: 90%;
+    padding: 10px;
+
+}
+
+.friend-btn {
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
 }
 
 @media only screen and (max-width: 700px) {

@@ -1,27 +1,29 @@
 import axios from 'axios';
 
-export function receiveUsers() {
-    return axios.get('/users').then(function({ data }) {
+export function getFriendshipRequests() {
+        console.log("From Actions before axios");
+    return axios.get('/get-friends').then(function({ data }) {
+        console.log("From Actions", data);
         return {
-            type: 'RECEIVE_USERS',
-            users: data.users
+            type: 'RECEIVE_FRIENDSHIP_REQUESTS',
+            users: data.data
         };
     });
 }
 
-export function makeHot(id) {
-    return axios.post('/hot/' + id).then(function() {
+export function makeFriend(id) {
+    return axios.post('/accept-request/' + id).then(function() {
         return {
-            type: 'MAKE_HOT',
+            type: 'ACCEPT_REQUEST',
             id: id
         };
     });
 }
 
-export function makeNot(id) {
-    return axios.post('/hot/' + id).then(function() {
+export function endFriendship(id) {
+    return axios.post('/delete-friend/' + id).then(function() {
         return {
-            type: 'MAKE_HOT',
+            type: 'END_FRIENDSHIP',
             id: id
         };
     });

@@ -11,14 +11,13 @@ body {
 }
 
 .app-header {
-    background: #B89DBA;
+    background: rgba(184, 157, 186, .5);
     display: flex;
     flex-direction: row;
     margin: 0;
     padding: 20px;
     height: 80px;
     justify-content: space-between;
-    opacity: 0.5;
 }
 
 .app-profile-pic {
@@ -39,6 +38,32 @@ body {
 
 .app-content {
     height: auto;
+}
+
+.app-nav {
+    padding: 0;
+    margin-top: -10px;
+}
+
+.app-nav li{
+     list-style-type: none;
+     float: left;
+     padding: 20px 50px;
+     margin: 0 20px;
+     border-radius: 5px;
+     /* border: 1px solid black; */
+}
+
+.app-nav a {
+     text-decoration: none;
+}
+
+.app-nav li:hover{
+    background-color: rgba(242, 242, 242, .5);
+}
+
+.app-nav a:visited {
+    color: #565b63;
 }
 
 .form {
@@ -195,6 +220,7 @@ textarea {
     margin-top: 10px;
     transition: background-color 1s;
     transition-timing-function: cubic-bezier(.2,1,.3,1);
+    cursor: pointer;
 }
 
 .send-btn:hover, .form-btn:hover, .bio-btn:hover, .friend-btn:hover {
@@ -240,6 +266,7 @@ textarea {
     width: 100px;
     height: 40px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 700px) {

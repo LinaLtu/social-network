@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './axios';
 
 export function getFriendshipRequests() {
         console.log("From Actions before axios");

@@ -1,6 +1,7 @@
 import React from 'react';
 import Welcome from './Welcome';
 import Logo from './Logo';
+import Nav from './Nav';
 import ProfilePic from './ProfilePic';
 import ProfilePicUpload from './ProfilePicUpload';
 import OtherUser from './OtherUser';
@@ -67,10 +68,14 @@ export default class App extends React.Component {
 
     render() {
         return (
+        <BrowserRouter>
             <div className="app-content">
                 <div className="app-header">
                     <div className="app-logo">
                         <Logo />
+                    </div>
+                    <div className="app-nav">
+                        <Nav />
                     </div>
                     <div className="app-profile-pic">
                         {this.state.showUploader && (
@@ -89,7 +94,6 @@ export default class App extends React.Component {
                         />
                     </div>
                 </div>
-                <BrowserRouter>
                     <div>
                         <Route
                             exact
@@ -109,8 +113,8 @@ export default class App extends React.Component {
                         <Route exact path="/user/:id" component={OtherUser} />
                         <Route exact path="/friends" component={Friends} />
                     </div>
-                </BrowserRouter>
-            </div>
+                </div>
+            </BrowserRouter>
         );
     }
 

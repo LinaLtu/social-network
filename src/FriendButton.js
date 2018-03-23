@@ -33,8 +33,9 @@ export default class FriendButton extends React.Component {
     }
 
     handleClick(){
+        console.log("Props from handleClick", this.props);
             if(!this.props.friendshipStatus || this.props.friendshipStatus == 0){
-                axios.post(`/send-request/${this.props.id}`).then(res => {
+                axios.post(`/send-request/${this.props.id}`, {status:this.props.friendshipStatus}).then(res => {
                 }).catch((err) => console.log(err));
             } else if ( this.props.friendshipStatus == 1){
 

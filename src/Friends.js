@@ -4,7 +4,7 @@ import { getFriendshipRequests, makeFriend, endFriendship } from './actions';
 import { connect } from 'react-redux';
 
 function mapStateToProps(state) {
-    console.log("From the mapsState", state.users)
+    // console.log("From the mapsState", state.users)
     return {
         potentialFriends: state.users &&
         state.users.filter(users => users.status == 1),
@@ -33,7 +33,7 @@ class Friends extends React.Component {
             <div>
                 <h1 className="friends-h1">People who would like to be friends with you</h1>
                 <div className="friends-container">
-                    {this.props.potentialFriends.map(function(potentialFriend){
+                    {this.props.potentialFriends.map((potentialFriend) => {
                         return(
                             <div key={potentialFriend.id} className="friends-item">
                                 <div className="friend-img">
@@ -42,14 +42,16 @@ class Friends extends React.Component {
                                     {potentialFriend.firstname} <br/>
                                     {potentialFriend.lastname}
                                 </div>
-                                <button className="friend-btn">Accept Friend Request</button>
+                                <button className="friend-btn"
+                                    onClick={() => this.props.dispatch(makeFriend(potentialFriend.id))}
+                                    >Accept Friend Request</button>
                             </div>
                         )
                     })}
                 </div>
                 <h1 className="friends-h1">Your friends</h1>
                 <div className="friends-container">
-                    {this.props.acceptedFriends.map(function(acceptedFriend){
+                    {this.props.acceptedFriends.map((acceptedFriend) => {
                         return(
                             <div key={acceptedFriend.id} className="friends-item">
                                 <div className="friend-img">
@@ -59,7 +61,8 @@ class Friends extends React.Component {
                                     {acceptedFriend.firstname} <br />
                                     {acceptedFriend.lastname}
                                 </div>
-                                    <button className="friend-btn">Remove</button>
+                                    <button className="friend-btn"
+                                        onClick={() => this.props.dispatch(endFriendship(acceptedFriend.id))}>Remove</button>
                             </div>
                         )
                     })}

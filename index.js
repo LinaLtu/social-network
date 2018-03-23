@@ -214,6 +214,16 @@ app.get('/get-user/:id', function(req, res) {
 });
 
 app.post('/send-request/:id', function(req, res) {
+    console.log("Rew.body.status", req.body.status);
+    if(req.body.status == null){
+        console.log('We are updating');
+        db
+            .updateToPending(req.session.userId, req.params.id, 1)
+            .then(results => {
+                res.json({ data: results.rows[0] });
+            })
+            .catch(err => res.sendStatus(500));
+        } else {
     console.log('Req body ', req.params.id);
     db
         .sendFriendRequest(req.session.userId, req.params.id, 1)
@@ -221,6 +231,7 @@ app.post('/send-request/:id', function(req, res) {
             res.json({ data: results.rows[0] });
         })
         .catch(err => res.sendStatus(500));
+    }
 });
 
 app.post('/accept-request/:id', function(req, res) {
@@ -253,6 +264,7 @@ app.post('/delete-friend/:id', function(req, res) {
     db
         .deleteFriend(req.session.userId, req.params.id)
         .then(results => {
+            console.log("From DELETE", results);
             res.json({ data: results.rows[0] });
         })
         .catch(err => res.sendStatus(500));

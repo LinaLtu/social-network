@@ -133,10 +133,17 @@ function deleteFriend(sender, recipient_id) {
 
     return db
         .query(q, params)
-        .then(results => {
-            console.log('Results from deleteFriend', results);
-        })
-        .catch(err => console.log(err));
+}
+
+function updateToPending(sender, recipient_id) {
+    const q = `UPDATE friendships SET status = 1
+    WHERE (sender_id = $1 AND recipient_id = $2)
+    OR (recipient_id = $1 AND sender_id = $2)
+    RETURNING *`;
+    const params = [sender, recipient_id];
+
+    return db
+        .query(q, params)
 }
 
 function acceptFriendRequest(sender, recipient_id) {
@@ -201,3 +208,4 @@ module.exports.acceptFriendRequest = acceptFriendRequest;
 module.exports.deleteFriend = deleteFriend;
 module.exports.cancelFriendRequest = cancelFriendRequest;
 module.exports.getAllFriends = getAllFriends;
+module.exports.updateToPending = updateToPending;

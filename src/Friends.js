@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from './axios';
-import { getFriendshipRequests, makeFriend, endFriendship } from './actions';
+import { getFriendshipRequests, makeFriend, endFriendship, rejectRequest } from './actions';
 import { connect } from 'react-redux';
 
 function mapStateToProps(state) {
@@ -45,6 +45,8 @@ class Friends extends React.Component {
                                 <button className="friend-btn"
                                     onClick={() => this.props.dispatch(makeFriend(potentialFriend.id))}
                                     >Accept Friend Request</button>
+                                    <button className="friend-btn"
+                                        onClick={() => this.props.dispatch(rejectRequest(potentialFriend.id))}>Reject Request</button>
                             </div>
                         )
                     })}

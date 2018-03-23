@@ -27,7 +27,7 @@ export default function(state = {}, action) {
     if (action.type == 'END_FRIENDSHIP') {
         state = Object.assign({}, state, {
             users: state.users.map(function(user) {
-                if(user.id == action.id){  ////what should I look at here?
+                if(user.id == action.id){
                     return {
                         ...user,
                         status: 0
@@ -38,6 +38,22 @@ export default function(state = {}, action) {
             })
         });
     }
+
+    if (action.type == 'REJECT_REQUEST') {
+        state = Object.assign({}, state, {
+            users: state.users.map(function(user) {
+                if(user.id == action.id){
+                    return {
+                        ...user,
+                        status: 3
+                    };
+                } else {
+                    return user;
+                }
+            })
+        });
+    }
+
         return state;
 }
 

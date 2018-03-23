@@ -35,7 +35,7 @@ export default class OtherUser extends React.Component {
                 recipientId = res.data.friendshipStatus.recipient_id;
                 senderId = res.data.friendshipStatus.sender
                 } else {
-                    friendshipStatus = null;
+                    friendshipStatus = 0;
                 }
 
                 this.setState(

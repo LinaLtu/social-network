@@ -126,8 +126,9 @@ function sendFriendRequest(sender_id, recipient_id, status) {
 
 function deleteFriend(sender, recipient_id) {
     const q = `UPDATE friendships SET status = 0
-    WHERE (sender_id = $1 AND recipient_id = $2)
-    OR (recipient_id = $1 AND sender_id = $2)
+    WHERE ((sender_id = $1 AND recipient_id = $2)
+    OR (recipient_id = $1 AND sender_id = $2))
+    AND (status = 2)
     RETURNING *`;
     const params = [sender, recipient_id];
 
@@ -135,21 +136,22 @@ function deleteFriend(sender, recipient_id) {
         .query(q, params)
 }
 
-function updateToPending(sender, recipient_id) {
-    const q = `UPDATE friendships SET status = 1
-    WHERE (sender_id = $1 AND recipient_id = $2)
-    OR (recipient_id = $1 AND sender_id = $2)
-    RETURNING *`;
-    const params = [sender, recipient_id];
-
-    return db
-        .query(q, params)
-}
+// function updateToPending(sender, recipient_id) {
+//     const q = `UPDATE friendships SET status = 1
+//     WHERE (sender_id = $1 AND recipient_id = $2)
+//     OR (recipient_id = $1 AND sender_id = $2)
+//     RETURNING *`;
+//     const params = [sender, recipient_id];
+//
+//     return db
+//         .query(q, params)
+// }
 
 function acceptFriendRequest(sender, recipient_id) {
     const q = `UPDATE friendships SET status = 2
-    WHERE (sender_id = $1 AND recipient_id = $2)
-    OR (recipient_id = $1 AND sender_id = $2)
+    WHERE ((sender_id = $1 AND recipient_id = $2)
+    OR (recipient_id = $1 AND sender_id = $2))
+    AND (status = 1)
     RETURNING *`;
     const params = [sender, recipient_id];
 
@@ -158,8 +160,9 @@ function acceptFriendRequest(sender, recipient_id) {
 
 function cancelFriendRequest(sender, recipient_id) {
     const q = `UPDATE friendships SET status = 0
-    WHERE (sender_id = $1 AND recipient_id = $2)
-    OR (recipient_id = $1 AND sender_id = $2)
+    WHERE ((sender_id = $1 AND recipient_id = $2)
+    OR (recipient_id = $1 AND sender_id = $2))
+    AND (status = 1)
     RETURNING *`;
     const params = [sender, recipient_id];
 
@@ -170,6 +173,23 @@ function cancelFriendRequest(sender, recipient_id) {
         })
         .catch(err => console.log(err));
 }
+
+function rejectFriendRequest(sender, recipient_id) {
+    const q = `UPDATE friendships SET status = 3
+    WHERE ((sender_id = $1 AND recipient_id = $2)
+    OR (recipient_id = $1 AND sender_id = $2))
+    AND (status = 1)
+    RETURNING *`;
+    const params = [sender, recipient_id];
+
+    return db
+        .query(q, params)
+        .then(results => {
+            console.log('Results from acceptFriendRequest', results);
+        })
+        .catch(err => console.log(err));
+}
+
 
 function getAllFriends(recipient_id) {
     const q = `
@@ -208,4 +228,4 @@ module.exports.acceptFriendRequest = acceptFriendRequest;
 module.exports.deleteFriend = deleteFriend;
 module.exports.cancelFriendRequest = cancelFriendRequest;
 module.exports.getAllFriends = getAllFriends;
-module.exports.updateToPending = updateToPending;
+module.exports.rejectFriendRequest = rejectFriendRequest;

@@ -7,6 +7,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reduxPromise from 'redux-promise';
 import reducer from './reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import * as io from 'socket.io-client';
 
 const store = createStore(
     reducer,
@@ -32,8 +33,4 @@ if (location.pathname != '/welcome') {
     ReactDOM.render(<Welcome />, document.querySelector('main'));
 }
 
-// function HelloWorld() {
-//     return (
-//             <div>Hello, World!</div>
-//         )
-// }
+io.connect();

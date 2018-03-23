@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server, { origins: 'localhost:8080' });
 const compression = require('compression');
 const db = require('./config/db');
 const bodyParser = require('body-parser');
@@ -214,24 +216,12 @@ app.get('/get-user/:id', function(req, res) {
 });
 
 app.post('/send-request/:id', function(req, res) {
-    console.log("Rew.body.status", req.body.status);
-    if(req.body.status == null){
-        console.log('We are updating');
-        db
-            .updateToPending(req.session.userId, req.params.id, 1)
-            .then(results => {
-                res.json({ data: results.rows[0] });
-            })
-            .catch(err => res.sendStatus(500));
-        } else {
-    console.log('Req body ', req.params.id);
     db
         .sendFriendRequest(req.session.userId, req.params.id, 1)
         .then(results => {
             res.json({ data: results.rows[0] });
         })
         .catch(err => res.sendStatus(500));
-    }
 });
 
 app.post('/accept-request/:id', function(req, res) {
@@ -255,6 +245,20 @@ app.post('/cancel-request/:id', function(req, res) {
         })
         .catch(err => {
             console.log('Error from cancel', err);
+            res.sendStatus(500);
+        });
+    // res.json({data: "ok"});
+});
+
+app.post('/reject-request/:id', function(req, res) {
+    console.log("We are making to the reject page");
+    db
+        .rejectFriendRequest(req.session.userId, req.params.id)
+        .then(results => {
+            res.json({ data: results.rows[0] });
+        })
+        .catch(err => {
+            console.log('Error from reject request', err);
             res.sendStatus(500);
         });
     // res.json({data: "ok"});
@@ -303,6 +307,25 @@ app.get('*', function(req, res) {
     }
 });
 
-app.listen(8080, function() {
+server.listen(8080, function() {
     console.log("I'm listening Social Network");
+});
+
+//Handing the connection event
+
+io.on('connection', function(socket) {
+    console.log(`socket with the id ${socket.id} is now connected`);
+
+    //we need to keep track of user and socket ides because people can have the same site open in different tabs
+    socket.on('disconnect', function() {
+        console.log(`socket with the id ${socket.id} is now disconnected`);
+    });
+
+    socket.on('thanks', function(data) {
+        console.log(data);
+    });
+
+    socket.emit('welcome', {
+        message: 'Welome. It is nice to see you'
+    });
 });

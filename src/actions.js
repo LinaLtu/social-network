@@ -27,4 +27,15 @@ export function endFriendship(id) {
             id: id
         };
     });
+
+}
+
+export function rejectRequest(id) {
+    return axios.post('/reject-request/' + id).then(function() {
+        return {
+            type: 'REJECT_REQUEST',
+            id: id
+        };
+    });
+
 }

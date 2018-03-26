@@ -54,7 +54,37 @@ export default function(state = {}, action) {
         });
     }
 
-        return state;
+
+    if (action.type == 'ONLINE_USERS') {
+        state = Object.assign({}, state, {
+            visitors: action.visitors
+        });
+    }
+
+
+    if (action.type == 'USER_JOINED') {
+        console.log("Action", action);
+        state = Object.assign({}, state, {
+            visitors: state.visitors.concat(action.visitors)
+        });
+    }
+
+//how to remove user from the list?
+
+    if (action.type == 'USER_LEFT') {
+        console.log("Action", action);
+        //action.id == id of the user who has left
+        var newVisitors = state.visitors.filter(function(visitor){
+            return visitor.id != action.id
+        })
+console.log("New visitors2 ", newVisitors);
+        state = Object.assign({}, state, {
+            visitors: newVisitors
+        });
+    }
+    console.log("State ", state);
+
+    return state;
 }
 
     // if (action.type == 'RECEIVE_FRIENDSHIP_REQUESTS') {

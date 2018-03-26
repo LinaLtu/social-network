@@ -211,6 +211,20 @@ function getAllFriends(recipient_id) {
         .catch(err => console.log(err));
 }
 
+function getUsersByIds(arrayOfIds) {
+    const q = `SELECT firstname, lastname, url, id FROM users WHERE id = ANY($1)`;
+    const params = [arrayOfIds];
+
+    return db.query(q, params);
+}
+
+function getUserWhoJoined(userId) {
+    const q = `SELECT firstname, lastname, url, id FROM users WHERE id = ($1)`;
+    const params = [userId];
+
+    return db.query(q, params);
+}
+
 //SELECT status, sender_id AS sender, recipient_id FROM friendship
 //WHERE (recipient_id = $1 or sender_id = $1)
 //AND (recipient_id = $2 or sender_id = $2)
@@ -229,3 +243,5 @@ module.exports.deleteFriend = deleteFriend;
 module.exports.cancelFriendRequest = cancelFriendRequest;
 module.exports.getAllFriends = getAllFriends;
 module.exports.rejectFriendRequest = rejectFriendRequest;
+module.exports.getUsersByIds = getUsersByIds;
+module.exports.getUserWhoJoined = getUserWhoJoined;

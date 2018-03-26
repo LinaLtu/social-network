@@ -8,6 +8,7 @@ import OtherUser from './OtherUser';
 import axios from './axios';
 import Profile from './Profile';
 import Friends from './Friends';
+import OnlineUsers from './OnlineUsers';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 
 export default class App extends React.Component {
@@ -112,6 +113,8 @@ export default class App extends React.Component {
                         />
                         <Route exact path="/user/:id" component={OtherUser} />
                         <Route exact path="/friends" component={Friends} />
+                        <Route exact path="/online-users" component={OnlineUsers} />
+
                     </div>
                 </div>
             </BrowserRouter>

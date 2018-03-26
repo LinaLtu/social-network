@@ -17,6 +17,8 @@ const multer = require('multer');
 const uidSafe = require('uid-safe');
 const path = require('path');
 
+let onlineUsers = [];
+
 var diskStorage = multer.diskStorage({
     destination: function(req, file, callback) {
         callback(null, __dirname + '/uploads');
@@ -37,12 +39,22 @@ var uploader = multer({
 
 app.use(bodyParser.json());
 
-app.use(
-    cookieSession({
-        secret: 'a secret',
-        maxAge: 1000 * 60 * 60 * 24 * 14
-    })
-);
+// app.use(
+//     cookieSession({
+//         secret: 'a secret',
+//         maxAge: 1000 * 60 * 60 * 24 * 14
+//     })
+// );
+
+const cookieSessionMiddleware = cookieSession({
+    secret: 'a very secretive secret',
+    maxAge: 1000 * 60 * 60 * 24 * 90
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 app.use(express.static('public'));
 
@@ -251,7 +263,7 @@ app.post('/cancel-request/:id', function(req, res) {
 });
 
 app.post('/reject-request/:id', function(req, res) {
-    console.log("We are making to the reject page");
+    console.log('We are making to the reject page');
     db
         .rejectFriendRequest(req.session.userId, req.params.id)
         .then(results => {
@@ -261,14 +273,13 @@ app.post('/reject-request/:id', function(req, res) {
             console.log('Error from reject request', err);
             res.sendStatus(500);
         });
-    // res.json({data: "ok"});
 });
 
 app.post('/delete-friend/:id', function(req, res) {
     db
         .deleteFriend(req.session.userId, req.params.id)
         .then(results => {
-            console.log("From DELETE", results);
+            console.log('From DELETE', results);
             res.json({ data: results.rows[0] });
         })
         .catch(err => res.sendStatus(500));
@@ -278,12 +289,13 @@ app.get('/get-friends', function(req, res) {
     db
         .getAllFriends(req.session.userId)
         .then(results => {
-                console.log('We have results from friends/SELECT', results);
+            console.log('We have results from friends/SELECT', results);
             res.json({ data: results.rows });
         })
         .catch(err => {
             console.log('Something went wrong', err);
-            res.sendStatus(500)});
+            res.sendStatus(500);
+        });
 });
 
 // app.post('/cancel-request/:id', function(req, res) {
@@ -311,21 +323,103 @@ server.listen(8080, function() {
     console.log("I'm listening Social Network");
 });
 
-//Handing the connection event
+//Handing the connection eventio.on('connection', function(socket) {
 
 io.on('connection', function(socket) {
+    onlineUsers = [];
+    if (!socket.request.session || !socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
     console.log(`socket with the id ${socket.id} is now connected`);
 
-    //we need to keep track of user and socket ides because people can have the same site open in different tabs
+
+    const userId = socket.request.session.userId;
+    console.log('USER from connect', userId);
+
+    onlineUsers.push({
+        userId,
+        socketId: socket.id
+    });
+
+    const userIds = onlineUsers.map(function(user) {
+        return user.userId;
+    });
+
+    console.log("Online users from server ", userIds);
+
+    let data = [];
+
+    db.getUsersByIds(userIds).then(results => {
+        data = results.rows;
+        console.log('from qr ', data);
+        socket.emit('onlineUsers', data);
+
+        //if the user is new, you have to broadcast
+    });
+
+    const count = onlineUsers.filter(function(user) {
+        return user.userId == userId
+    }).length;
+
+    if(count == 1){
+        db.getUserWhoJoined(userId).then(results => {
+            console.log("Inside of there ", results);
+            data = results.rows[0];
+            socket.broadcast.emit('userJoined', data)
+        });
+
+
+    }
+
+        /////from here -- > ?????
+
+    io.on('userJoined', function() {
+        const userJustJoined = userJoined.map(function(user) {
+            return user.userId;
+        });
+        socket.broadcast.emit('userJoined', data);
+    });
+
+    //dbquery  getUserById()
+
+    //then pass the results to emit, then do at action, then go to the reducer and get user info from there to display it in the component
+
+    // socket.emit('onlineUsers', onlineUsers);
+
+    //in browser:
+    // socket.on('onlineUsers', function(onlineUsers){
+    //     console.log(onlineUsers);
+    // });
+
+    //loop trough the list of onlineUsers and see how many time the user's in the list and only then run "userJoined"
+    // socket.broadcats.emit('userJoined')
+
+
     socket.on('disconnect', function() {
+        //remove from onlineUsers user with this socket.
+        //then look if the id is still There
+        //if it's not there, emit
+        var idOfUserWhoLeft = onlineUsers.filter(userLeft => userLeft.socketId = socket.id);
+        var userLeftId = idOfUserWhoLeft[0].userId;
+
+        console.log("Id of user who left", userLeftId);
+
+        io.sockets.emit('userLeft', userLeftId);
+
         console.log(`socket with the id ${socket.id} is now disconnected`);
     });
-
-    socket.on('thanks', function(data) {
-        console.log(data);
-    });
-
-    socket.emit('welcome', {
-        message: 'Welome. It is nice to see you'
-    });
 });
+
+//we should not get any other info from socket because it's all changable (like the bio or the name), only the id is always the same
+
+//we need to keep track of user and socket ids because people can have the same site open in different tabs
+//{ userId: socketId}
+
+//
+// socket.on('thanks', function(data) {
+//     console.log(data);
+// });
+//
+// socket.emit('welcome', {
+//     message: 'Welome. It is nice to see you'
+// });

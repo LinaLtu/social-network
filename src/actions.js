@@ -39,3 +39,26 @@ export function rejectRequest(id) {
     });
 
 }
+
+export function onlineUsers(data){
+    return {
+        type: 'ONLINE_USERS',
+        visitors: data
+    };
+}
+
+export function userJoined(data){
+    console.log("From userJoined");
+    return {
+        type: 'USER_JOINED',
+        visitors: data
+    };
+}
+
+export function userLeft(data){
+    console.log("From user", data);
+    return {
+        type: 'USER_LEFT',
+        id: data
+    };
+}

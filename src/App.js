@@ -2,6 +2,7 @@ import React from 'react';
 import Welcome from './Welcome';
 import Logo from './Logo';
 import Nav from './Nav';
+import Chat from './Chat';
 import ProfilePic from './ProfilePic';
 import ProfilePicUpload from './ProfilePicUpload';
 import OtherUser from './OtherUser';
@@ -114,6 +115,15 @@ export default class App extends React.Component {
                         <Route exact path="/user/:id" component={OtherUser} />
                         <Route exact path="/friends" component={Friends} />
                         <Route exact path="/online-users" component={OnlineUsers} />
+                        <Route exact path="/chat" render={() => (
+                            <Chat
+                                firstname={this.state.firstname}
+                                lastname={this.state.lastname}
+                                url={this.state.url}
+                                id={this.state.id}
+                            />
+                        )}
+                    />
 
                     </div>
                 </div>

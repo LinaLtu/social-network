@@ -324,6 +324,12 @@ server.listen(8080, function() {
 });
 
 //Handing the connection eventio.on('connection', function(socket) {
+let messages = [
+    {
+        id: 1000,
+        text: 'test test'
+    }
+];
 
 io.on('connection', function(socket) {
     onlineUsers = [];
@@ -332,6 +338,11 @@ io.on('connection', function(socket) {
     }
     console.log(`socket with the id ${socket.id} is now connected`);
 
+    socket.on('chatMessage', msg => {
+        console.log('FROM SERVER', msg);
+        messages.push(msg);
+        io.sockets.emit('chat', msg);
+    });
 
     const userId = socket.request.session.userId;
     console.log('USER from connect', userId);
@@ -345,7 +356,7 @@ io.on('connection', function(socket) {
         return user.userId;
     });
 
-    console.log("Online users from server ", userIds);
+    console.log('Online users from server ', userIds);
 
     let data = [];
 
@@ -358,20 +369,16 @@ io.on('connection', function(socket) {
     });
 
     const count = onlineUsers.filter(function(user) {
-        return user.userId == userId
+        return user.userId == userId;
     }).length;
 
-    if(count == 1){
+    if (count == 1) {
         db.getUserWhoJoined(userId).then(results => {
-            console.log("Inside of there ", results);
+            console.log('Inside of there ', results);
             data = results.rows[0];
-            socket.broadcast.emit('userJoined', data)
+            socket.broadcast.emit('userJoined', data);
         });
-
-
     }
-
-        /////from here -- > ?????
 
     io.on('userJoined', function() {
         const userJustJoined = userJoined.map(function(user) {
@@ -394,15 +401,18 @@ io.on('connection', function(socket) {
     //loop trough the list of onlineUsers and see how many time the user's in the list and only then run "userJoined"
     // socket.broadcats.emit('userJoined')
 
+    socket.emit('chats', messages);
 
     socket.on('disconnect', function() {
         //remove from onlineUsers user with this socket.
         //then look if the id is still There
         //if it's not there, emit
-        var idOfUserWhoLeft = onlineUsers.filter(userLeft => userLeft.socketId = socket.id);
+        var idOfUserWhoLeft = onlineUsers.filter(
+            userLeft => (userLeft.socketId = socket.id)
+        );
         var userLeftId = idOfUserWhoLeft[0].userId;
 
-        console.log("Id of user who left", userLeftId);
+        console.log('Id of user who left', userLeftId);
 
         io.sockets.emit('userLeft', userLeftId);
 

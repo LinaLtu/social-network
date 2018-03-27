@@ -1,9 +1,9 @@
 import axios from './axios';
 
 export function getFriendshipRequests() {
-        console.log("From Actions before axios");
+    console.log('From Actions before axios');
     return axios.get('/get-friends').then(function({ data }) {
-        console.log("From Actions", data);
+        console.log('From Actions', data);
         return {
             type: 'RECEIVE_FRIENDSHIP_REQUESTS',
             users: data.data
@@ -27,7 +27,6 @@ export function endFriendship(id) {
             id: id
         };
     });
-
 }
 
 export function rejectRequest(id) {
@@ -37,28 +36,41 @@ export function rejectRequest(id) {
             id: id
         };
     });
-
 }
 
-export function onlineUsers(data){
+export function onlineUsers(data) {
     return {
         type: 'ONLINE_USERS',
         visitors: data
     };
 }
 
-export function userJoined(data){
-    console.log("From userJoined");
+export function userJoined(data) {
+    console.log('From userJoined');
     return {
         type: 'USER_JOINED',
         visitors: data
     };
 }
 
-export function userLeft(data){
-    console.log("From user", data);
+export function userLeft(data) {
+    console.log('From user', data);
     return {
         type: 'USER_LEFT',
         id: data
+    };
+}
+
+export function chat(msg) {
+    return {
+        type: 'CHAT_MESSAGE',
+        message: msg
+    };
+}
+
+export function chats(msg) {
+    return {
+        type: 'CHAT_MESSAGES',
+        messages: msg
     };
 }

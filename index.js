@@ -324,12 +324,7 @@ server.listen(8080, function() {
 });
 
 //Handing the connection eventio.on('connection', function(socket) {
-let messages = [
-    {
-        id: 1000,
-        text: 'test test'
-    }
-];
+let messages = [];
 
 io.on('connection', function(socket) {
     onlineUsers = [];
@@ -339,7 +334,7 @@ io.on('connection', function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
 
     socket.on('chatMessage', msg => {
-        console.log('FROM SERVER', msg);
+        // console.log('FROM SERVER', msg);
         messages.push(msg);
         io.sockets.emit('chat', msg);
     });

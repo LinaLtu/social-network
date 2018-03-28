@@ -70,7 +70,7 @@ export default function(state = {}, action) {
         var newVisitors = state.visitors.filter(function(visitor) {
             return visitor.id != action.id;
         });
-        console.log('New visitors2 ', newVisitors);
+        // console.log('New visitors2 ', newVisitors);
         state = Object.assign({}, state, {
             visitors: newVisitors
         });
@@ -78,7 +78,7 @@ export default function(state = {}, action) {
     // console.log('State ', state);
 
     if (action.type == 'CHAT_MESSAGE') {
-        console.log('From reducer ', state);
+        // console.log('From reducer ', state);
         state = Object.assign({}, state, {
             chatMessages: [...state.chatMessages, action.message]
         });

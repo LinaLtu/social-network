@@ -2,9 +2,10 @@ import React from 'react';
 import axios from './axios';
 import { connect } from 'react-redux';
 import { emitChatMessage } from './socket';
+import { Link } from 'react-router-dom';
 
 function mapStateToProps(state) {
-    console.log('Inside mapstatetoprops', state);
+    // console.log('Inside mapstatetoprops', state);
     return {
         chatMessages: state.chatMessages || []
     };
@@ -31,8 +32,6 @@ class Chat extends React.Component {
     }
 
     onKeyDown(e) {
-        console.log('This is our key', e.keyCode);
-
         if (e.keyCode == 13) {
             e.preventDefault();
             let msg = e.target.value;
@@ -42,7 +41,8 @@ class Chat extends React.Component {
                 firstName: this.props.firstname,
                 lastName: this.props.lastname,
                 url: this.props.url,
-                id: this.props.id
+                id: this.props.id,
+                time: new Date()
             });
             e.target.value = '';
         }
@@ -70,14 +70,34 @@ class Chat extends React.Component {
                     }}
                 >
                     {this.props.chatMessages.map(message => {
-                        console.log('From the return ', message);
-                        return <p>{message.msg}</p>;
+                        return (
+                            <div className="chat-item">
+                                <Link to={`/user/${message.id}`}>
+                                    <div className="chat-img">
+                                        <img
+                                            src={message.url}
+                                            alt={`${message.firstName} ${
+                                                message.lastName
+                                            }`}
+                                        />
+                                    </div>
+                                </Link>
+                                <div className="msg-sender-info">
+                                    <p>
+                                        {message.firstName} {message.lastName}{' '}
+                                        said at {message.time}:
+                                        <p>{message.msg} </p>
+                                    </p>
+                                </div>
+                            </div>
+                        );
                     })}
                 </div>
 
                 <textarea
                     className="chat-text-area"
                     onKeyDown={this.onKeyDown}
+                    placeholder="Leave a message..."
                 />
             </div>
         );

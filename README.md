@@ -2,7 +2,7 @@
 
 On the 9th week of Full Stack JavaScript Web Development coding bootcamp at SPICED Academy, I build a single-page social network. 
 
-![socialnetworkdemo](/Users/lina/Desktop/socialnetworkdemo.gif)
+![socialnetworkdemo](https://github.com/spicedacademy/horseradish-socialnetwork/blob/lina/socialnetworkdemo.gif)
 
 
 

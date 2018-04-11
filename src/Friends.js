@@ -10,15 +10,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function mapStateToProps(state) {
-    // console.log("From the mapsState", state.users)
     return {
         potentialFriends:
             state.users && state.users.filter(users => users.status == 1),
 
         acceptedFriends:
             state.users && state.users.filter(users => users.status == 2)
-
-        //&& state.users.filter(user => user.hot)
     };
 }
 
@@ -30,9 +27,7 @@ class Friends extends React.Component {
         if (!this.props.potentialFriends) {
             return null;
         }
-        // if(!this.props.acceptedFriend){
-        //     return null;
-        // }
+
         return (
             <div>
                 <h1 className="friends-h1">

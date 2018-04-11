@@ -17,8 +17,6 @@ class OnlineUsers extends React.Component {
     render() {
         if (!this.props.visitors) {
             return null;
-        } else {
-            console.log(this.props.visitors);
         }
         return (
             <div>

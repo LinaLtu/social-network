@@ -13,9 +13,7 @@ export default class OtherUser extends React.Component {
 
     componentDidMount() {
         axios.get(`/get-user/${this.props.match.params.id}`).then(res => {
-
             if (res.data.data != 'same') {
-                console.log("From componentDidMount");
                 const {
                     firstname,
                     lastname,
@@ -27,51 +25,44 @@ export default class OtherUser extends React.Component {
 
                 let friendshipStatus;
                 let recipientId;
-                let senderId
+                let senderId;
 
-                if(res.data.friendshipStatus){
-                    console.log(res.data.friendshipStatus);
-                friendshipStatus  = res.data.friendshipStatus.status;
-                recipientId = res.data.friendshipStatus.recipient_id;
-                senderId = res.data.friendshipStatus.sender
+                if (res.data.friendshipStatus) {
+                    friendshipStatus = res.data.friendshipStatus.status;
+                    recipientId = res.data.friendshipStatus.recipient_id;
+                    senderId = res.data.friendshipStatus.sender;
                 } else {
                     friendshipStatus = 0;
                 }
 
-                this.setState(
-                    { firstname, lastname, email, id, url, bio, friendshipStatus, recipientId, senderId  },
-                    function() {
-                        console.log(
-                            "Res data", this.state
-                        );
-                    }
-                );
+                this.setState({
+                    firstname,
+                    lastname,
+                    email,
+                    id,
+                    url,
+                    bio,
+                    friendshipStatus,
+                    recipientId,
+                    senderId
+                });
             } else {
                 this.props.history.push('/');
             }
         });
-
-        //getOtherInfor/2 --> setState with all user info and friendship status
-        //then we pass this.state.friendshipStatus to my button
     }
 
     render() {
-        console.log("Before if", this.props);
-        if(typeof this.state.friendshipStatus === "undefined") {
-            return (<div>Loading...</div>);
+        if (typeof this.state.friendshipStatus === 'undefined') {
+            return <div>Loading...</div>;
         }
-        console.log("From OtherUser render ", this.state);
+
         return (
             <div className="app-content">
-
-                    <div className="app-logo">
-                    </div>
-                    {this.state.showUploader && (
-                        <ProfilePicUpload
-                            changeImageUrl={this.changeImageUrl}
-                        />
-                    )}
-
+                <div className="app-logo" />
+                {this.state.showUploader && (
+                    <ProfilePicUpload changeImageUrl={this.changeImageUrl} />
+                )}
 
                 <div className="profile-content">
                     <div>

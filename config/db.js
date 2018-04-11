@@ -47,7 +47,6 @@ function insertRegistration(firstname, lastname, email, password) {
     return db
         .query(q, params)
         .then(results => {
-            console.log('Registration completed!');
             return results;
         })
         .catch(err => console.log(err));
@@ -67,18 +66,14 @@ function getUserInfoById(id) {
 
 function insertImageIntoDB(url, id) {
     const q = `UPDATE users SET url = $1 WHERE id = $2 RETURNING *`;
-    console.log('From the q: ', url, id);
+
     const params = [url, id];
 
     return db
         .query(q, params)
         .then(results => {
             let images = results.rows;
-            images.forEach(function(image) {
-                console.log(image);
-                // let url = config.s3Url + image.image;
-                // image.image = url;
-            });
+
             return images[0];
         })
         .catch(err => console.log(err));
@@ -86,7 +81,7 @@ function insertImageIntoDB(url, id) {
 
 function insertBioIntoDB(bio, id) {
     const q = `UPDATE users SET bio = $1 WHERE id = $2 RETURNING *`;
-    // console.log("From the q: ", url, id);
+
     const params = [bio, id];
 
     return db
@@ -132,20 +127,8 @@ function deleteFriend(sender, recipient_id) {
     RETURNING *`;
     const params = [sender, recipient_id];
 
-    return db
-        .query(q, params)
+    return db.query(q, params);
 }
-
-// function updateToPending(sender, recipient_id) {
-//     const q = `UPDATE friendships SET status = 1
-//     WHERE (sender_id = $1 AND recipient_id = $2)
-//     OR (recipient_id = $1 AND sender_id = $2)
-//     RETURNING *`;
-//     const params = [sender, recipient_id];
-//
-//     return db
-//         .query(q, params)
-// }
 
 function acceptFriendRequest(sender, recipient_id) {
     const q = `UPDATE friendships SET status = 2
@@ -190,7 +173,6 @@ function rejectFriendRequest(sender, recipient_id) {
         .catch(err => console.log(err));
 }
 
-
 function getAllFriends(recipient_id) {
     const q = `
     SELECT users.id, firstname, lastname, url, status
@@ -224,10 +206,6 @@ function getUserWhoJoined(userId) {
 
     return db.query(q, params);
 }
-
-//SELECT status, sender_id AS sender, recipient_id FROM friendship
-//WHERE (recipient_id = $1 or sender_id = $1)
-//AND (recipient_id = $2 or sender_id = $2)
 
 module.exports.hashPassword = hashPassword;
 module.exports.insertRegistration = insertRegistration;

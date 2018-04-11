@@ -9,8 +9,6 @@ export default function ProfilePic(props) {
                 onClick={props.toggleUploader}
                 className="img-circle"
             />
-
-            {/*<button onclick={props.toggleUploader}> ToggleUploader </button>*/}
         </div>
     );
 }

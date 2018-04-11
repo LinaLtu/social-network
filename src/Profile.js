@@ -1,6 +1,6 @@
-import React from "react";
-import ProfilePic from "./ProfilePic";
-import axios from "./axios";
+import React from 'react';
+import ProfilePic from './ProfilePic';
+import axios from './axios';
 
 export default class Profile extends React.Component {
     constructor(props) {
@@ -17,7 +17,6 @@ export default class Profile extends React.Component {
 
     toggleBio() {
         this.setState({ showAddBio: !this.state.showAddBio });
-        console.log("Toggle Bio");
     }
 
     handleChange(e) {
@@ -36,21 +35,26 @@ export default class Profile extends React.Component {
                     />
                 </div>
                 <div className="profile-info">
-                    <p style={{ fontSize: 22 + "px", padding: 0 + "px" }}>
+                    <p style={{ fontSize: 22 + 'px', padding: 0 + 'px' }}>
                         Name: {this.props.firstname} {this.props.lastname}
                     </p>
                     <p>Email: {this.props.email}</p>
                     {this.props.bio && (
                         <p>
                             Bio: {this.props.bio}
-                            <button className="bio-btn" onClick={this.toggleBio}>
+                            <button
+                                className="bio-btn"
+                                onClick={this.toggleBio}
+                            >
                                 Edit your Bio
                             </button>
                         </p>
                     )}
 
                     {!this.props.bio && (
-                        <button className="bio-btn" onClick={this.toggleBio}>Add your Bio</button>
+                        <button className="bio-btn" onClick={this.toggleBio}>
+                            Add your Bio
+                        </button>
                     )}
 
                     <br />
@@ -65,7 +69,8 @@ export default class Profile extends React.Component {
                                 onChange={this.handleChange}
                             />
                             <br />
-                            <button className="send-btn"
+                            <button
+                                className="send-btn"
                                 onClick={() => {
                                     this.props.setBio(this.state.newBio);
                                     this.setState({ showAddBio: false });

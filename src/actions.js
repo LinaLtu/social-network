@@ -1,9 +1,7 @@
 import axios from './axios';
 
 export function getFriendshipRequests() {
-    console.log('From Actions before axios');
     return axios.get('/get-friends').then(function({ data }) {
-        console.log('From Actions', data);
         return {
             type: 'RECEIVE_FRIENDSHIP_REQUESTS',
             users: data.data
@@ -46,7 +44,6 @@ export function onlineUsers(data) {
 }
 
 export function userJoined(data) {
-    console.log('From userJoined');
     return {
         type: 'USER_JOINED',
         visitors: data
@@ -54,7 +51,6 @@ export function userJoined(data) {
 }
 
 export function userLeft(data) {
-    console.log('From user', data);
     return {
         type: 'USER_LEFT',
         id: data

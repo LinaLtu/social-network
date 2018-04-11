@@ -5,7 +5,6 @@ import { emitChatMessage } from './socket';
 import { Link } from 'react-router-dom';
 
 function mapStateToProps(state) {
-    // console.log('Inside mapstatetoprops', state);
     return {
         chatMessages: state.chatMessages || []
     };
@@ -25,17 +24,11 @@ class Chat extends React.Component {
         this.onKeyDown = this.onKeyDown.bind(this);
     }
 
-    componentDidMount() {
-        //dispatch an action
-        //to get all of the previous chat messages
-        //this.proprs.dispatch(ChatMessages());
-    }
-
     onKeyDown(e) {
         if (e.keyCode == 13) {
             e.preventDefault();
             let msg = e.target.value;
-            console.log('Enter clicked', msg);
+
             emitChatMessage({
                 msg,
                 firstName: this.props.firstname,
@@ -54,12 +47,6 @@ class Chat extends React.Component {
     }
 
     render() {
-        // if(!this.props.visitors){
-        //     return null;
-        // } else {
-        //     console.log(this.props.visitors);
-        // }
-
         return (
             <div className="chat-area">
                 <h1 className="h1-chart">Let's Chat!</h1>

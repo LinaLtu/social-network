@@ -14,7 +14,7 @@ On the 9th week of Full Stack JavaScript Web Development coding bootcamp at SPIC
 - upload a picture, add and edit their bio,
 
 
-- send friend requests to other users, accept receivedfriend requests or terminate an existing friendship,
+- send friend requests to other users, accept received friend requests or terminate an existing friendship,
 
 
 - see online users,
